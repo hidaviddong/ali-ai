@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useRef, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { useActions } from "ai/rsc";
 import { Message } from "@/components/message";
 import { useScrollToBottom } from "@/components/use-scroll-to-bottom";
@@ -15,6 +15,16 @@ export default function Home() {
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
 
+  useEffect(() => {
+    if (messages.length === 0) {
+      const welcomeMessage =
+        "您好！我是智医助手，您的智能医疗咨询伙伴。我可以帮您分析症状、提供初步健康指导，并为您推荐合适的专科医生。请注意，我提供的信息仅供参考，不能替代专业医生的面诊。请问您今天有什么不适或症状需要咨询呢？";
+
+      setMessages([
+        <Message key="welcome" role="assistant" content={welcomeMessage} />,
+      ]);
+    }
+  }, [messages.length]);
   return (
     <div className="flex flex-row justify-center pb-20 h-dvh bg-white dark:bg-zinc-900">
       <div className="flex flex-col justify-between gap-4">
